@@ -64,13 +64,24 @@ else:
 
 ## Task2: Определение класса ip адреса
 
-#Есть переменная с ip адресом (строка), нужно опрделить класс (A/B/C/D/E) ip адреса.
+# Есть переменная с ip адресом (строка), нужно опрделить класс (A/B/C/D/E) ip адреса.
 
-ip = "10.3.2.1"
+ip1 = "10.3.2.1"
+A_ip_class = "A"
+B_ip_class = "B"
+C_ip_class = "C"
+D_ip_class = "D"
+E_ip_class = "E"
 
-<...код...>
-    ip_class = >...>
+ip = ip1.split(".")
 
-print(f"класс ip {ip}: {ip_class}")
-"класс ip 10.3.2.1: A"
-```
+if 0 < int(ip[0]) <= 127:
+    print(f"класс ip {ip1}: {A_ip_class}")
+elif 128 <= int(ip[0]) <= 191:
+    print(f"класс ip {ip1}: {B_ip_class}")
+elif 192 <= int(ip[0]) <= 223:
+    print(f"класс ip {ip1}: {C_ip_class}")
+elif 224 <= int(ip[0]) <= 239:
+    print(f"класс ip {ip1}: {D_ip_class}")
+elif 240 <= int(ip[0]) <= 255:
+    print(f"класс ip {ip1}: {E_ip_class}")
