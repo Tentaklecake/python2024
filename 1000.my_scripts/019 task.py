@@ -66,22 +66,55 @@ else:
 
 # Есть переменная с ip адресом (строка), нужно опрделить класс (A/B/C/D/E) ip адреса.
 
-ip1 = "10.3.2.1"
-A_ip_class = "A"
-B_ip_class = "B"
-C_ip_class = "C"
-D_ip_class = "D"
-E_ip_class = "E"
+# ip1 = "10.3.2.1"
+# A_ip_class = "A"
+# B_ip_class = "B"
+# C_ip_class = "C"
+# D_ip_class = "D"
+# E_ip_class = "E"
+#
+# ip = ip1.split(".")
+#
+# if 0 < int(ip[0]) <= 127:
+#    print(f"класс ip {ip1}: {A_ip_class}")
+# elif 128 <= int(ip[0]) <= 191:
+#    print(f"класс ip {ip1}: {B_ip_class}")
+# elif 192 <= int(ip[0]) <= 223:
+#    print(f"класс ip {ip1}: {C_ip_class}")
+# elif 224 <= int(ip[0]) <= 239:
+#    print(f"класс ip {ip1}: {D_ip_class}")
+# elif 240 <= int(ip[0]) <= 255:
+#    print(f"класс ip {ip1}: {E_ip_class}")
 
-ip = ip1.split(".")
 
-if 0 < int(ip[0]) <= 127:
-    print(f"класс ip {ip1}: {A_ip_class}")
-elif 128 <= int(ip[0]) <= 191:
-    print(f"класс ip {ip1}: {B_ip_class}")
-elif 192 <= int(ip[0]) <= 223:
-    print(f"класс ip {ip1}: {C_ip_class}")
-elif 224 <= int(ip[0]) <= 239:
-    print(f"класс ip {ip1}: {D_ip_class}")
-elif 240 <= int(ip[0]) <= 255:
-    print(f"класс ip {ip1}: {E_ip_class}")
+## Task3: Использование dict вместо if
+
+access = """
+interface {if_name}
+   switchport mode access
+   switchport access vlan {vlan}
+!
+""".strip()
+
+trunk = """
+interface {if_name}
+   switchport mode trunk
+   switchport trunk allowed vlan {vlan}
+!
+""".strip()
+
+
+intf1 = {
+    "if_name": "gi0/1",
+    "vlan": 102,
+    "mode": "access",
+}
+
+intf2 = {
+    "if_name": "gi0/2",
+    "vlan": 103,
+    "mode": "trunk",
+}
+
+if "access" in intf1["mode"]:
+    intf1_config = access.format(**intf1)
