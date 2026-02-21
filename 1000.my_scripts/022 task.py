@@ -83,3 +83,95 @@ def timer():
 
 
 t = timer()
+
+# Task4: Парсинг конфигурации в словарь
+
+import pprint
+
+config = """
+spanning-tree mode rapid-pvst
+spanning-tree logging
+spanning-tree extend system-id
+spanning-tree pathcost method long
+!
+lldp run
+!
+interface FastEthernet0/1
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/2
+ switchport access vlan 11
+ switchport mode access
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/3
+ switchport access vlan 51
+ switchport mode access
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/4
+ switchport mode access
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+!
+interface GigabitEthernet0/1
+ description mgmt1.core - FastEthernet0/32
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,50-70,80,90
+ mls qos trust cos
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/2
+ description mgmt2.core - FastEthernet0/32
+ switchport mode trunk
+ mls qos trust cos
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/3
+  description mgmt3.core - FastEthernet0/32
+  switchport mode trunk
+  switchport trunk allowed vlan 10,20,30,40,50-70,80,90
+  switchport trunk allowed vlan add 150,151
+  mls qos trust cos
+  ip dhcp snooping trust
+!
+interface GigabitEthernet0/4
+ description mgmt4.core - FastEthernet0/32
+ ip address 1.2.3.4 255.255.255.0
+!
+line vty 0 4
+ password cisco
+!
+"""
+list_junk = ["", "!", "building", "exit"]
+
+
+def parse_config(config):
+    result = {}
+    parent_line = []
+    list_config = config.split("\n")
+    # pprint.pprint(list_config)
+    for line in list_config:
+        for junk_line in list_junk:
+            if line == junk_line:
+                list_config.remove(line)
+                break
+    if list_config[-1] in list_junk:
+        list_config.remove(list_config[-1])
+    for line in list_config:
+        if not line.startswith(" "):
+            parent_line = line
+            result[line] = []
+        else:
+            result[parent_line].append(line.lstrip())
+    return result
+
+
+print(parse_config(config))
+
+# pprint.pprint(config)
