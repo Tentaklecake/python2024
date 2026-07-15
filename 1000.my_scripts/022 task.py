@@ -69,3 +69,102 @@ print(list_new_int)
 """
 #Task4: Парсинг конфигурации в словарь
 
+config = """
+spanning-tree mode rapid-pvst
+spanning-tree logging
+spanning-tree extend system-id
+spanning-tree pathcost method long
+!
+lldp run
+!
+interface FastEthernet0/1
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/2
+ switchport access vlan 11
+ switchport mode access
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/3
+ switchport access vlan 51
+ switchport mode access
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/4
+ switchport mode access
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+!
+interface GigabitEthernet0/1
+ description mgmt1.core - FastEthernet0/32
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,50-70,80,90
+ mls qos trust cos
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/2
+ description mgmt2.core - FastEthernet0/32
+ switchport mode trunk
+ mls qos trust cos
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/3
+  description mgmt3.core - FastEthernet0/32
+  switchport mode trunk
+  switchport trunk allowed vlan 10,20,30,40,50-70,80,90
+  switchport trunk allowed vlan add 150,151
+  mls qos trust cos
+  ip dhcp snooping trust
+!
+interface GigabitEthernet0/4
+ description mgmt4.core - FastEthernet0/32
+ ip address 1.2.3.4 255.255.255.0
+!
+line vty 0 4
+ password cisco
+!
+
+
+def parse_config(config):
+    result = {}
+    config = config.split('\n')
+    for config_strings in config:
+        if (config_strings == '!') or (config_strings == '') or (config_strings == 'exit'):
+            config.remove(config_strings)
+    del config[-1]
+    for config_strings in config:
+        if not config_strings.startswith(' '):
+            result[config_strings] = []
+            key = config_strings
+        else:
+            result[key].append(config_strings.strip())
+    return result
+
+result = parse_config(config)
+print(result)
+
+
+#task 5 Filter vs list comprehension
+
+seq = ["rt1", "RT2", "SW1", "sw2"]
+
+list(filter(str if 'rt' in str.lower() else None, seq)) 
+
+
+#Task7 Параметры функции
+
+def foo(var1, var2=None, var3=None):
+    print(var1,var2,var3)
+
+#foo(var1=32)
+# var1 = 32
+
+foo(var1=32, var3="test")
+# var1 = 32
+# var3 = test
+"""
