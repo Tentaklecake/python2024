@@ -1,5 +1,9 @@
 #task1 создание генератора
-
+"""
+Написать генератор строчек конфигурации на основе конфигурации устройства. 
+При выводе очередной строки нужно пропускать строки "!" или 
+"exit-address-family":
+"""
 from typing import Generator
 
 config = """
@@ -29,7 +33,8 @@ line vty 0 4
 
 
 def config_generator(config: str) -> Generator[str, None, None]:
-    <ваш код>
+    if elem in config == "!" or "exit-address-family":
+        pass
 
 for line in config_generator(config):
     print(line)
